@@ -125,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
             if len(argss) >= 1:
                 new_instance = HBNBCommand.classes[argss[0]]()
                 storage.save()
-                for i in range (1, len(argss)-1):
+                for i in range (1, len(argss)):
                         key, value = argss[i].split("=")
                         new_value = value.replace("_", " ").strip('"')
                         strg = storage.all()[f"{argss[0]}.{new_instance.id}"]
