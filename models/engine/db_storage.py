@@ -24,11 +24,10 @@ class DBStorage:
         """Default constructor"""
 
         self.__engine = create_engine(
-            url=f"mysql+mysqldb://{os.getenv("HBNB_MYSQL_USER")}:{os.getenv("HBNB_MYSQL_PWD")}\
-            @{os.getenv("HBNB_MYSQL_HOST")}/{os.getenv("HBNB_MYSQL_DB")}?\
-                charset=utf8",
+            url=f'mysql+mysqldb://{os.getenv("HBNB_MYSQL_USER")}:{os.getenv("HBNB_MYSQL_PWD")}\
+            @{os.getenv("HBNB_MYSQL_HOST")}/{os.getenv("HBNB_MYSQL_DB")}',
             pool_pre_ping=True
-            )
+        )
         if os.getenv("HBNB_ENV ") == "test":
             Base.metadata.drop_all(bind=self.__engine)
 
