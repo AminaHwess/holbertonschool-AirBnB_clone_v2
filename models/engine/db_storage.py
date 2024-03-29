@@ -52,7 +52,7 @@ class DBStorage:
             query = self.__session.query(User, State,
                                          City, Amenity, Place, Review)
 
-        dict = []
+        dict = {}
         for obj in query:
             dict[f"{obj.__class__.__name__}.{obj.id}"] = obj
         return dict
