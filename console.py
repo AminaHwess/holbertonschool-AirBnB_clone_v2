@@ -128,8 +128,7 @@ class HBNBCommand(cmd.Cmd):
                 for i in range (1, len(argss)):
                         key, value = argss[i].split("=")
                         new_value = value.replace("_", " ").strip('"')
-                        strg = storage.all()[f"{argss[0]}.{new_instance.id}"]
-                        strg.__dict__[key] = new_value
+                        setattr(new_instance, key, new_value)
             print(new_instance.id)
             storage.save()
 
