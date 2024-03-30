@@ -122,13 +122,17 @@ class HBNBCommand(cmd.Cmd):
             elif argss[0] not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            if len(argss) >= 1:
-                new_instance = HBNBCommand.classes[argss[0]]()
-                storage.save()
-                for i in range (1, len(argss)):
-                        key, value = argss[i].split("=")
+            dict = {}
+            for i in range (1, len(argss)):
+                    key, value = argss[i].split("=")
+                    if value[0] == '"':
                         new_value = value.replace("_", " ").strip('"')
-                        setattr(new_instance, key, new_value)
+                        dict[key] = new_value
+            if dict == {}:
+                new_instance = HBNBCommand.classes[argss[0]]()
+            else:
+                new_instance = HBNBCommand.classes[argss[0]](**dict)
+                storage.new(new_instance)
             print(new_instance.id)
             storage.save()
 
