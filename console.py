@@ -124,10 +124,10 @@ class HBNBCommand(cmd.Cmd):
                 return
             dict = {}
             for i in range (1, len(argss)):
-                    key, value = argss[i].split("=")
-                    if value[0] == '"':
-                        new_value = value.replace("_", " ").strip('"')
-                        dict[key] = new_value
+                key, value = list(argss[i].split("="))
+                if value[0] == '"':
+                    value = value.strip('"').replace("_", " ")
+                dict[key] = value
             if dict == {}:
                 new_instance = HBNBCommand.classes[argss[0]]()
             else:
