@@ -14,14 +14,13 @@ from models.amenity import Amenity
 from sqlalchemy.orm import sessionmaker
 
 
-
 class DBStorage:
     """class DBStorage"""
+
     __engine = None
     __session = None
 
     def __init__(self):
-
         """Default constructor"""
 
         self.__engine = create_engine(
@@ -37,7 +36,6 @@ class DBStorage:
             Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
-
         """query on the current database session
 
         all objects depending of the class name
@@ -64,33 +62,28 @@ class DBStorage:
             objs = self.__session.query(cls)
         return {"{}.{}".format(type(o).__name__, o.id): o for o in objs}
 
-
     def new(self, obj):
-
         """add the object to the current database session"""
 
         self.__session.add(obj)
 
     def save(self):
-
         """commit all changes of the current database session"""
 
         self.__session.commit()
 
     def delete(self, obj=None):
-
         """delete from the current database session obj if not None"""
 
         if obj is not None:
             self.__session.delete(obj)
 
     def close(self):
-
-        """close the current database connection and remove the reference to it"""
+        """close the current database
+        connection and remove the reference to it"""
         self.__session.remove()
 
     def reload(self):
-
         """create all tables in the database
         create the current database session by using a sessionmaker"""
 

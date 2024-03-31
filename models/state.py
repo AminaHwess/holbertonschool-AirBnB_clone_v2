@@ -16,10 +16,9 @@ class State(BaseModel, Base):
     cities = relationship("City", backref="state", cascade="delete")
     if os.getenv("HBNB_TYPE_STORAGE") != "db":
 
-    
-
         def cities(self):
             from models import storage
+
             """getter attribute cities that returns the list of
             City instances with state_id equals to the current State.id"""
             cities = storage.all(City)
