@@ -36,25 +36,29 @@ class Place(BaseModel, Base):
 
     @property
     def reviews(self):
-        """Getter attribute reviews that returns the list of Review instances
-        with place_id equals to the current Place.id
-        """
         from models import storage
-        my_list = []
-        extracted_reviews = storage.all('Review').values()
-        for review in extracted_reviews:
-            if self.id == review.place_id:
-                my_list.append(review)
-        return my_list
-
+        rev = []
+        for x in storage.all(Review).values():
+            if x.place_id == self.id:
+                rev.append(x)
+        return rev
     @property
     def amenities(self):
-        """ Place amenities """
-        ob = models.storage.all(Amenity).values()
-        return [obj for obj in ob if obj.id in self.amenity_ids]
-
+        from models import storage
+        from models.amenity import Amenity
+        ame = []
+        moby = storage.all(Amenity)
+        for amenity_inst in moby.values():
+            if amenity_inst.id == self.amenity_id:
+                ame.append(amenity_inst)
+        return ame
     @amenities.setter
-    def amenities(self, value):
-        """ Amenities setter """
-        if type(value) is Amenity:
-            self.amenity_ids.append(value.id)
+    def amenities(self, amenity_list):
+        from models.amenity import Amenity
+        for x in amenity_list:
+            if type(x) == Amenity:
+                self.amenity_ids.append(x)
+    @reviews.setter
+    def reviews(self, review_obj):
+        if review_obj and review_obj not in self.review_ids:
+            self.review_ids.append(review_obj.id)
