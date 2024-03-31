@@ -33,38 +33,28 @@ class Place(BaseModel, Base):
     reviews = relationship('Review', backref='place', cascade='delete')
     amenities = relationship('Amenity', secondary=place_amemity,
                              viewonly=False)
-    amenity_ids = []
 
-    if models.is_type != 'db':
-        @property
-        def reviews(self):
-            """Getter attribute reviews that returns the list of Review instances
-            with place_id equals to the current Place.id
-            """
-            from models import storage
-            my_list = []
-            extracted_reviews = storage.all('Review').values()
-            for review in extracted_reviews:
-                if self.id == review.place_id:
-                    my_list.append(review)
-            return my_list
+    @property
+    def reviews(self):
+        """Getter attribute reviews that returns the list of Review instances
+        with place_id equals to the current Place.id
+        """
+        from models import storage
+        my_list = []
+        extracted_reviews = storage.all('Review').values()
+        for review in extracted_reviews:
+            if self.id == review.place_id:
+                my_list.append(review)
+        return my_list
 
-        @property
-        def amenities(self):
-            """Getter attribute that returns the list of Amenity instances based on
-            the attribute amenity_ids that contains all Amenity.id linked to the
-            Place.
-            """
-            from models import storage
-            my_list = []
-            extracted_amenities = storage.all('Amenity').values()
-            for amenity in extracted_amenities:
-                if self.id == amenity.amenity_ids:
-                    my_list.append(amenity)
-            return my_list
+    @property
+    def amenities(self):
+        """ Place amenities """
+        ob = models.storage.all(Amenity).values()
+        return [obj for obj in ob if obj.id in self.amenity_ids]
 
-        @amenities.setter
-        def amenities(self, value):
-            """ Amenities setter """
-            if type(value) is Amenity:
-                self.amenity_ids.append(value.id)
+    @amenities.setter
+    def amenities(self, value):
+        """ Amenities setter """
+        if type(value) is Amenity:
+            self.amenity_ids.append(value.id)
