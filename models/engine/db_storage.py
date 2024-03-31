@@ -14,6 +14,7 @@ from models.amenity import Amenity
 from sqlalchemy.orm import sessionmaker
 
 
+
 class DBStorage:
     """class DBStorage"""
     __engine = None
@@ -24,9 +25,13 @@ class DBStorage:
         """Default constructor"""
 
         self.__engine = create_engine(
-            url=f'mysql+mysqldb://{os.getenv("HBNB_MYSQL_USER")}:{os.getenv("HBNB_MYSQL_PWD")}\
-            @{os.getenv("HBNB_MYSQL_HOST")}/{os.getenv("HBNB_MYSQL_DB")}',
-            pool_pre_ping=True
+            "mysql+mysqldb://{}:{}@{}/{}".format(
+                os.getenv("HBNB_MYSQL_USER"),
+                os.getenv("HBNB_MYSQL_PWD"),
+                os.getenv("HBNB_MYSQL_HOST"),
+                os.getenv("HBNB_MYSQL_DB"),
+            ),
+            pool_pre_ping=True,
         )
         if os.getenv("HBNB_ENV ") == "test":
             Base.metadata.drop_all(bind=self.__engine)
@@ -45,23 +50,23 @@ class DBStorage:
 
         value = object"""
 
-        if cls:
-            classname = globals()[cls]()
-            query = self.__session.query(classname)
-        else:
-            query = self.__session.query(User, State,
-                                         City, Amenity, Place, Review)
+        if cls is None:
+            objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(City).all())
 
-        dict = {}
-        for obj in query:
-            dict[f"{obj.__class__.__name__}.{obj.id}"] = obj
-        return dict
+        else:
+            if type(cls) == str:
+                cls = eval(cls)
+            objs = self.__session.query(cls)
+        return {"{}.{}".format(type(o).__name__, o.id): o for o in objs}
+
 
     def new(self, obj):
 
         """add the object to the current database session"""
 
-        self.__session.add(obj)
+        local_obj = self.__session.merge(obj)
+        self.__session.add(local_obj)
 
     def save(self):
 
