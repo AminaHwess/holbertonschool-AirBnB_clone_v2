@@ -56,6 +56,7 @@ class DBStorage:
             objs.extend(self.__session.query(User).all())
             objs.extend(self.__session.query(Place).all())
             objs.extend(self.__session.query(Review).all())
+            objs.extend(self.__session.query(Amenity).all())
 
         else:
             if type(cls) == str:
@@ -68,8 +69,7 @@ class DBStorage:
 
         """add the object to the current database session"""
 
-        local_obj = self.__session.merge(obj)
-        self.__session.add(local_obj)
+        self.__session.add(obj)
 
     def save(self):
 
@@ -87,7 +87,7 @@ class DBStorage:
     def close(self):
 
         """close the current database connection and remove the reference to it"""
-        self.__session.close()
+        self.__session.remove()
 
     def reload(self):
 
