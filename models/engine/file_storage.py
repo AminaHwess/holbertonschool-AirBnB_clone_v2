@@ -26,9 +26,6 @@ class FileStorage:
         key = "{}.{}".format(type(obj).__name__, obj.id)
         del FileStorage.__objects[key]
 
-    def close(self):
-        pass
-
     def new(self, obj):
         """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()["__class__"] + "." + obj.id: obj})
@@ -69,3 +66,6 @@ class FileStorage:
                     self.all()[key] = classes[val["__class__"]](**val)
         except FileNotFoundError:
             pass
+        
+    def close(self):
+        self.reload()
