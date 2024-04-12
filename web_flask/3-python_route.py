@@ -15,19 +15,19 @@ app = Flask(__name__)
 @app.route("/", strict_slashes=False)
 def hello_HBNB():
     """display Hello HBNB!"""
-    return "<p>Hello HBNB!</p>"
+    return "Hello HBNB!"
 
 
 @app.route("/hbnb", strict_slashes=False)
 def HBNB():
     """Display HBNB"""
-    return "<p>HBNB</p>"
+    return "HBNB"
 
 
 @app.route("/c/<text>", strict_slashes=False)
 def C_is_fun(text):
     """display C followed by the value of the text variable"""
-    string = "<p>C %s</p>" % text
+    string = "C %s" % text
     string = string.replace("_", " ")
     return string
 
@@ -36,7 +36,7 @@ def C_is_fun(text):
 @app.route("/python/<text>", strict_slashes=False)
 def Python_is_cool(text):
     """display Python, followed by the value of text"""
-    string1 = "<p>Python %s</p>" % text
+    string1 = "Python %s" % text
     string1 = string1.replace("_", " ")
     return string1
 
