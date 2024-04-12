@@ -36,7 +36,7 @@ def C_is_fun(text):
 @app.route("/python/<text>", strict_slashes=False)
 def Python_is_cool(text):
     """display Python, followed by the value of text"""
-    string1 = "Python %s" % text
+    string1 = f"Python {text}"
     string1 = string1.replace("_", " ")
     return string1
 
