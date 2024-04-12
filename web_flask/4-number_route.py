@@ -40,6 +40,7 @@ def Python_is_cool(text):
     string1 = string1.replace("_", " ")
     return string1
 
+
 @app.route("/number/<int:n>", strict_slashes=False)
 def is_it_a_number(n):
     """display n is a number only if n is an integer"""
