@@ -78,11 +78,6 @@ class DBStorage:
         if obj is not None:
             self.__session.delete(obj)
 
-    def close(self):
-        """close the current
-        database connection and remove the reference to it"""
-        self.__session.remove()
-
     def reload(self):
         """create all tables in the database
         create the current database session by using a sessionmaker"""
@@ -92,3 +87,8 @@ class DBStorage:
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session
+
+    def close(self):
+        """close the current
+        database connection and remove the reference to it"""
+        self.__session.remove()
